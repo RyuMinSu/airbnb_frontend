@@ -14,7 +14,7 @@ export default function Header() {
 	const logoColor = useColorModeValue("red.500", "red.200")
 
 	return (	
-		<HStack justifyContent={"space-between"} py={5} px={10} borderBottomWidth={1}>
+		<HStack justifyContent={"space-between"} py={5} px={40} borderBottomWidth={1}>
 					{/* logo */}
 			<Box color={logoColor}>
 				<Link to="/">
