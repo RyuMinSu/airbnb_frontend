@@ -1,6 +1,6 @@
-import { Box, Button, HStack } from "@chakra-ui/react"
+import { Box, Button, HStack, IconButton } from "@chakra-ui/react"
 import { Link, Outlet } from "react-router-dom"
-import { FaAirbnb } from "react-icons/fa";
+import { FaAirbnb, FaMoon } from "react-icons/fa";
 
 
 
@@ -15,15 +15,16 @@ export default function Root() {
 						<FaAirbnb size={48}/>
 					</Link>
 				</Box>
-				{/* login & signup */}
+				{/* darkmode & login & signup */}
 				<HStack spacing={2}>
+					<IconButton aria-label="Toggle dark mode" variant={"ghost"} icon={<FaMoon />} />					
 					<Button colorScheme={"yellow"}>Login</Button>
 					<Button colorScheme={"red"}>SignUp</Button>
 				</HStack>
 			</HStack>
 
 			<Outlet />
-			
+
 		</Box>
 		
 	)
