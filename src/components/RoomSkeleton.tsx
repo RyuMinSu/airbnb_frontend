@@ -6,7 +6,7 @@ export default function RoomSkeleton() {
 	return (
 		<Box>
 			{/* image */}
-			<Skeleton rounded={"2xl"} minH={280} />
+			<Skeleton rounded={"2xl"} minH={280} mb={3} />
       <HStack justifyContent={"space-between"}>
         <Skeleton rounded="lg" width="60%" height={5} mb={1} />
         <Skeleton rounded="lg" width="15%" height={5} />
