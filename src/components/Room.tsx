@@ -4,6 +4,8 @@ import { FaStar, FaHeart } from "react-icons/fa";
 
 
 export default function Room() {
+
+
 	return (
 		<VStack alignItems={"start"}>
 			{/* image & heart */}
