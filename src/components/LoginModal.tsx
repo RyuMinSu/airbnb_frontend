@@ -1,5 +1,6 @@
 import { Box, Button, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack } from "@chakra-ui/react"
 import {FaUserNinja, FaLock } from "react-icons/fa";
+import SocialLogin from "./SocialLogin";
 
 
 
@@ -47,6 +48,10 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 					<Button colorScheme={"red"} w={"100%"} mt={4}>
 						Login
 					</Button>
+
+					{/* social login */}
+					<SocialLogin />
+
 				</ModalBody>
 			</ModalContent>
 		</Modal>
