@@ -3,7 +3,8 @@ import { FaStar } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query"
 import Room from "../components/Room";
 import RoomSkeleton from "../components/RoomSkeleton";
-import getRooms from "../api";
+import { getRooms } from "../api";
+
 
 
 
@@ -16,7 +17,7 @@ interface IPhoto {
 }
 
 interface IRoom {
-  pk: number;
+  id: number;
   country: string;
   city: string;
   price: number;
@@ -46,6 +47,8 @@ export default function Home() {
 
 			{data?.map((room) => (
         <Room
+					key={room.id}
+					pk={room.id}
           imageUrl={room.photos[0].file}          
           rating={room.rating}
           city={room.city}
