@@ -1,8 +1,10 @@
 import { Box, Button, Grid, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query"
 import Room from "../components/Room";
 import RoomSkeleton from "../components/RoomSkeleton";
-import { useEffect, useState } from "react";
+import getRooms from "../api";
+
 
 
 
@@ -25,18 +27,9 @@ interface IRoom {
 
 
 export default function Home() {
-	const [isLoading, setIsLoading] = useState(false);
-	const [rooms, setRooms] = useState<IRoom[]>([]);
-	const fetchRooms = async() => {
-		const response = await fetch("http://127.0.0.1:8000/api/v1/rooms/");
-		const json = await response.json();
-		setRooms(json);
-		setIsLoading(true);
-	}
-
-	useEffect(() => {
-		fetchRooms();
-	},[])
+	// api.ts에서 fetching한 데이터 받아오기
+	// useQuery사용(받아올 데이터는 IROOM, 받아올 데이터의 키값은 rooms)
+	const { isLoading, data } = useQuery<IRoom[]>(["rooms"], getRooms)
 
 	return (
 		<Grid rowGap={2} columnGap={4} templateColumns={{sm: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)", xl: "repeat(4, 1fr)", "2xl": "repeat(5, 1fr)"}} mt={10} px={{base: 10, lg: 40}}>
@@ -51,7 +44,7 @@ export default function Home() {
 				</>				
 			) : null}
 
-			{rooms.map((room) => (
+			{data?.map((room) => (
         <Room
           imageUrl={room.photos[0].file}          
           rating={room.rating}
