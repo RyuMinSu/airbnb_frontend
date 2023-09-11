@@ -47,3 +47,9 @@ export interface IRoomDetail extends IRoomList {
 	}
 	is_liked: boolean;
 }
+
+export interface IReview {
+	user: IRoomOwner;
+	payload: string;
+	rating: number;
+}

@@ -8,11 +8,16 @@ const Instance = axios.create({
 })
 
 export const getRooms = () => Instance.get("rooms/").then((response) => response.data)
+
 export const getRoom = ({queryKey}: QueryFunctionContext) => {
 	const [_, roomPk] = queryKey
 	return Instance.get(`rooms/${roomPk}`).then((response) => response.data)
 } 
 
+export const getRoomReviews = ({queryKey}: QueryFunctionContext) => {
+	const [_, roomPk] = queryKey
+	return Instance.get(`rooms/${roomPk}/reviews`).then((response) => response.data)
+}
 	
 
 
