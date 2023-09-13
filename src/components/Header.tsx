@@ -1,12 +1,15 @@
-import { Box, Button, HStack, Stack, IconButton, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react"
+import { Box, Button, HStack, Stack, IconButton, useColorMode, useColorModeValue, useDisclosure, Avatar } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
+import useUser from "../lib/useUser";
+
 
 
 
 export default function Header() {
+	const { userLoading, user, isLoggedIn } = useUser();
 	const { isOpen:LoginisOpen , onOpen: LoginonOpen , onClose: LoginonClose } = useDisclosure();
 	const { isOpen: SignupisOpen, onOpen: SignuponOpen, onClose: SignuponClose } = useDisclosure();
 	const { toggleColorMode } = useColorMode();
@@ -24,9 +27,21 @@ export default function Header() {
 	
 			{/* darkmode & login & signup */}
 			<HStack spacing={2}>
-				<IconButton onClick={toggleColorMode} aria-label="Toggle dark mode" variant={"ghost"} icon={<Icon />} />					
-				<Button onClick={LoginonOpen} colorScheme={"yellow"}>Login</Button>
-				<Button onClick={SignuponOpen} colorScheme={"red"}>SignUp</Button>
+				{/* darkmode */}
+				<IconButton onClick={toggleColorMode} aria-label="Toggle dark mode" variant={"ghost"} icon={<Icon />} />
+				{!userLoading ? (
+					!isLoggedIn ? (
+						<>
+							{/* login */}
+							<Button onClick={LoginonOpen} colorScheme={"yellow"}>Login</Button>
+							{/* signup */}
+							<Button onClick={SignuponOpen} colorScheme={"red"}>SignUp</Button>
+						</>
+					): (
+						<Avatar name={user?.name} src={user?.avatar} size={"md"} />
+					)
+				) : null }
+
 			</HStack>
 			{/* modals */}
 			<LoginModal isOpen={LoginisOpen} onClose={LoginonClose}/>

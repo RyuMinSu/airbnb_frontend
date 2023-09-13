@@ -4,7 +4,8 @@ import axios from "axios"; // fetch를 위한 상위 호환
 
 
 const Instance = axios.create({
-	baseURL: "http://127.0.0.1:8000/api/v1/"
+	baseURL: "http://127.0.0.1:8000/api/v1/",
+	withCredentials: true
 })
 
 export const getRooms = () => Instance.get("rooms/").then((response) => response.data)
@@ -19,7 +20,9 @@ export const getRoomReviews = ({queryKey}: QueryFunctionContext) => {
 	return Instance.get(`rooms/${roomPk}/reviews`).then((response) => response.data)
 }
 	
-
+export const getMe = () => {
+	return Instance.get("users/me").then((response) => response.data)
+}
 
 
 // export default async function getRooms() {
