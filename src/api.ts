@@ -1,6 +1,6 @@
 import { QueryFunctionContext } from "@tanstack/react-query";
 import axios from "axios"; // fetch를 위한 상위 호환
-
+import Cookie from "js-cookie"
 
 
 const Instance = axios.create({
@@ -24,6 +24,11 @@ export const getMe = () => {
 	return Instance.get("users/me").then((response) => response.data)
 }
 
+export const logout = () => {
+	Instance.post("users/log-out", null, {
+		headers: {"X-CSRFToken": Cookie.get("csrftoken") || "",}
+	}).then((response) => response.data)
+}
 
 // export default async function getRooms() {
 // 	const response = await Instance.get('rooms/');
