@@ -4,6 +4,7 @@ import NotFound from './routes/NotFound';
 import Home from './routes/Home';
 import RoomDetail from './routes/RoomDetail';
 import GithubConfirm from './routes/GithubConfirm';
+import KakaoConfirm from './routes/KakaoConfirm';
 
 
 
@@ -27,9 +28,13 @@ const router = createBrowserRouter([
 					{
 						path: "github/",
 						element: <GithubConfirm />,
+					},
+					{
+						path: "kakao",
+						element: <KakaoConfirm />,
 					}
 				]
-			}
+			},
 		]
 	}
 ])

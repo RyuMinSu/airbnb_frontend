@@ -39,7 +39,10 @@ export const githubLogin = (code: string) =>
 		headers: {"X-CSRFToken": Cookie.get("csrftoken") || "",}
 	}).then((response) => response.status)
 
-
+export const kakaoLogin = (code: string) =>
+	Instance.post("users/kakao", {code}, {
+		headers: {"X-CSRFToken": Cookie.get("csrftoken") || "",}
+	}).then((response) => response.status)
 
 
 // export default async function getRooms() {

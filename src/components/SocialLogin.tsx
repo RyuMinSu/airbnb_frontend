@@ -4,6 +4,13 @@ import { FaGithub, FaComment } from "react-icons/fa"
 
 
 export default function SocialLogin() {
+	const kakaoParams = {
+		client_id: "22a65de99735c9323a40e10d89981e73",
+		redirect_uri: "http://127.0.0.1:3000/social/kakao",		
+		response_type: "code",
+	}
+	const params = new URLSearchParams(kakaoParams).toString()
+
 	return (
 		<Box mb={4}>
 			{/* divider */}
@@ -20,7 +27,7 @@ export default function SocialLogin() {
 				</Button>
 
 				{/* kakao */}
-				<Button w={"100%"} colorScheme={"yellow"} leftIcon={<FaComment />}>
+				<Button as={"a"} href={`https://kauth.kakao.com/oauth/authorize?${params}`} w={"100%"} colorScheme={"yellow"} leftIcon={<FaComment />}>
 					Continue KaKao
 				</Button>
 			</VStack>
