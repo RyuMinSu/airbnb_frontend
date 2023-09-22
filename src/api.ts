@@ -30,11 +30,17 @@ export const logout = () => {
 	}).then((response) => response.data)
 }
 
-export const githubLogin = (code: string) => {
+interface githubstatus {
+	status: number;
+}
+
+export const githubLogin = (code: string) => 
 	Instance.post("users/github", {code}, {
 		headers: {"X-CSRFToken": Cookie.get("csrftoken") || "",}
 	}).then((response) => response.status)
-}
+
+
+
 
 // export default async function getRooms() {
 // 	const response = await Instance.get('rooms/');

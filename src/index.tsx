@@ -14,13 +14,12 @@ const client = new QueryClient();
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-root.render(
-  <React.StrictMode>
+root.render(  
   <QueryClientProvider client={client}>
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <RouterProvider router={router} />    
+      <RouterProvider router={router} />
     </ChakraProvider>
   </QueryClientProvider>
-  </React.StrictMode>
+  
 );
