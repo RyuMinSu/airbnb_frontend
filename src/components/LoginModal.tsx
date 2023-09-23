@@ -1,8 +1,10 @@
-import { Box, Button, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack } from "@chakra-ui/react"
+import { Box, Button, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack, useToast } from "@chakra-ui/react"
 import {FaUserNinja, FaLock } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+import { IUsernameLoginError, IUsernameLoginSuccess, IUsernameLoginVariables, usernameLogIn } from "../api";
 
 
 
@@ -32,12 +34,32 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 		password: string;
 	}
 	const { register, handleSubmit, formState: {errors} } = useForm<IForm>();
-	const onSubmit = (data: IForm) => {
-		console.log(data);		
+	// mutation
+	const toast = useToast();
+	const queryClient = useQueryClient();
+	const mutation = useMutation<IUsernameLoginSuccess, IUsernameLoginError, IUsernameLoginVariables>(
+		usernameLogIn, {
+			onMutate: () => {
+				console.log("mutations starting")
+			},
+			onSuccess: (data) => {
+				toast({
+					title: "welcome back!",
+					status: "success",
+				})
+				onClose();
+				queryClient.refetchQueries(["me"]);
+			},
+			onError: (error) => {
+				console.log("mutation error")
+			}
+	});
+	const onSubmit = ({username, password}: IForm) => {
+		mutation.mutate({username, password});
 	}
 	console.log(errors);
 
-	
+
 	return (
 		// login & signup modal
 		<Modal onClose={onClose} isOpen={isOpen}>
@@ -73,7 +95,7 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 					</VStack>
 
 					{/* login btn */}
-					<Button type="submit" colorScheme={"red"} w={"100%"} mt={4}>
+					<Button isLoading={mutation.isLoading} type="submit" colorScheme={"red"} w={"100%"} mt={4}>
 						Login
 					</Button>
 
