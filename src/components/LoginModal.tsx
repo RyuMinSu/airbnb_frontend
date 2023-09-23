@@ -1,6 +1,7 @@
 import { Box, Button, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack } from "@chakra-ui/react"
 import {FaUserNinja, FaLock } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
+import { useState } from "react";
 
 
 
@@ -10,6 +11,21 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({isOpen, onClose}: LoginModalProps) {
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const onChange = (event: React.SyntheticEvent<HTMLInputElement>) => {		
+		const { name, value } = event.currentTarget;
+		if (name === "username") {
+			setUsername(value);
+		} else if (name === "password") {
+			setPassword(value);
+		}		
+	}
+	const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		console.log(username, password)
+	}
+
 	return (
 		// login & signup modal
 		<Modal onClose={onClose} isOpen={isOpen}>
@@ -19,7 +35,7 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 				<ModalHeader>Login</ModalHeader>						
 				<ModalCloseButton /> {/* modal close btn */}
 				{/* modal body */}
-				<ModalBody>
+				<ModalBody as={"form"} onSubmit={onSubmit as any}>
 					{/* username & password */}
 					<VStack>
 						{/* username */}
@@ -30,7 +46,7 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 								</Box>
 							}
 							/>					
-							<Input variant={"filled"} placeholder="username" />
+							<Input required name="username" onChange={onChange} value={username} variant={"filled"} placeholder="username" />
 						</InputGroup>
 
 						{/* password */}
@@ -40,12 +56,12 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 									<FaLock />
 								</Box>
 							} />
-							<Input variant={"filled"} placeholder="password" />
+							<Input required type="password" name="password" onChange={onChange} value={password} variant={"filled"} placeholder="password" />
 						</InputGroup>
 					</VStack>
 
 					{/* login btn */}
-					<Button colorScheme={"red"} w={"100%"} mt={4}>
+					<Button type="submit" colorScheme={"red"} w={"100%"} mt={4}>
 						Login
 					</Button>
 
