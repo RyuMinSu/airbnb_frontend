@@ -2,6 +2,7 @@ import { Box, Button, Input, InputGroup, InputLeftElement, Modal, ModalBody, Mod
 import {FaUserNinja, FaLock } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 
 
@@ -11,21 +12,32 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({isOpen, onClose}: LoginModalProps) {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const onChange = (event: React.SyntheticEvent<HTMLInputElement>) => {		
-		const { name, value } = event.currentTarget;
-		if (name === "username") {
-			setUsername(value);
-		} else if (name === "password") {
-			setPassword(value);
-		}		
-	}
-	const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		console.log(username, password)
-	}
+	// const [username, setUsername] = useState("");
+	// const [password, setPassword] = useState("");
+	// const onChange = (event: React.SyntheticEvent<HTMLInputElement>) => {		
+	// 	const { name, value } = event.currentTarget;
+	// 	if (name === "username") {
+	// 		setUsername(value);
+	// 	} else if (name === "password") {
+	// 		setPassword(value);
+	// 	}		
+	// }
+	// const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+	// 	event.preventDefault();
+	// 	console.log(username, password)
+	// }
 
+	interface IForm {
+		username: string;
+		password: string;
+	}
+	const { register, handleSubmit, formState: {errors} } = useForm<IForm>();
+	const onSubmit = (data: IForm) => {
+		console.log(data);		
+	}
+	console.log(errors);
+
+	
 	return (
 		// login & signup modal
 		<Modal onClose={onClose} isOpen={isOpen}>
@@ -35,7 +47,7 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 				<ModalHeader>Login</ModalHeader>						
 				<ModalCloseButton /> {/* modal close btn */}
 				{/* modal body */}
-				<ModalBody as={"form"} onSubmit={onSubmit as any}>
+				<ModalBody as={"form"} onSubmit={handleSubmit(onSubmit)}>
 					{/* username & password */}
 					<VStack>
 						{/* username */}
@@ -46,7 +58,7 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 								</Box>
 							}
 							/>					
-							<Input required name="username" onChange={onChange} value={username} variant={"filled"} placeholder="username" />
+							<Input isInvalid={Boolean(errors.username?.message)} {...register("username", {required: "write username"})} variant={"filled"} placeholder="username" />
 						</InputGroup>
 
 						{/* password */}
@@ -56,7 +68,7 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 									<FaLock />
 								</Box>
 							} />
-							<Input required type="password" name="password" onChange={onChange} value={password} variant={"filled"} placeholder="password" />
+							<Input isInvalid={Boolean(errors.password?.message)} type="password" {...register("password", {required: "write password"})} variant={"filled"} placeholder="password" />
 						</InputGroup>
 					</VStack>
 
