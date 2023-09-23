@@ -20,15 +20,17 @@ export const getRoomReviews = ({queryKey}: QueryFunctionContext) => {
 	return Instance.get(`rooms/${roomPk}/reviews`).then((response) => response.data)
 }
 	
-export const getMe = () => {
-	return Instance.get("users/me").then((response) => response.data)
-}
+export const getMe = () => 
+	Instance.get("users/me").then((response) => response.data)
 
-export const logout = () => {
-	Instance.post("users/log-out", null, {
-		headers: {"X-CSRFToken": Cookie.get("csrftoken") || "",}
-	}).then((response) => response.data)
-}
+export const logOut = () =>
+  Instance
+    .post(`users/log-out`, null, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);
 
 interface githubstatus {
 	status: number;
@@ -56,10 +58,19 @@ export interface IUsernameLoginError {
 	error: string;
 }
 
-export const usernameLogIn = ({username, password}: IUsernameLoginVariables ) =>
-	Instance.post("users/log-in", {username, password}, {
-		headers: {"X-CSRFToken": Cookie.get("csrftoken") || "",}
-	}).then((response) => response.data)
+export const usernameLogIn = ({
+	username,
+	password,
+}: IUsernameLoginVariables) => 
+Instance.post(
+		`/users/log-in`,
+		{ username, password },
+		{
+			headers: {
+				"X-CSRFToken": Cookie.get("csrftoken") || "",
+			},
+		}
+	).then((response) => response.data);
 	
 
 // export default async function getRooms() {

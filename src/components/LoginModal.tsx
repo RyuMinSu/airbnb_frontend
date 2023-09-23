@@ -1,4 +1,4 @@
-import { Box, Button, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack, useToast } from "@chakra-ui/react"
+import { Box, Button, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, VStack, useToast } from "@chakra-ui/react"
 import {FaUserNinja, FaLock } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
 import { useState } from "react";
@@ -33,31 +33,24 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 		username: string;
 		password: string;
 	}
-	const { register, handleSubmit, formState: {errors} } = useForm<IForm>();
+	const { register, handleSubmit, formState: {errors}, reset } = useForm<IForm>();
 	// mutation
 	const toast = useToast();
 	const queryClient = useQueryClient();
-	const mutation = useMutation<IUsernameLoginSuccess, IUsernameLoginError, IUsernameLoginVariables>(
-		usernameLogIn, {
-			onMutate: () => {
-				console.log("mutations starting")
-			},
-			onSuccess: (data) => {
-				toast({
-					title: "welcome back!",
-					status: "success",
-				})
-				onClose();
-				queryClient.refetchQueries(["me"]);
-			},
-			onError: (error) => {
-				console.log("mutation error")
-			}
+	const mutation = useMutation(usernameLogIn, {				
+    onSuccess: () => {
+      toast({
+        title: "welcome back!",
+        status: "success",
+      });
+      onClose();
+      queryClient.refetchQueries(["me"]);
+			reset();
+		},
 	});
-	const onSubmit = ({username, password}: IForm) => {
-		mutation.mutate({username, password});
-	}
-	console.log(errors);
+  const onSubmit = ({ username, password }: IForm) => {
+    mutation.mutate({ username, password });
+  };
 
 
 	return (
@@ -93,6 +86,12 @@ export default function LoginModal({isOpen, onClose}: LoginModalProps) {
 							<Input isInvalid={Boolean(errors.password?.message)} type="password" {...register("password", {required: "write password"})} variant={"filled"} placeholder="password" />
 						</InputGroup>
 					</VStack>
+
+					{mutation.isError ? (
+            <Text color="red.500" textAlign={"center"} fontSize="sm">
+              Username or Password are wrong
+            </Text>
+          ) : null}
 
 					{/* login btn */}
 					<Button isLoading={mutation.isLoading} type="submit" colorScheme={"red"} w={"100%"} mt={4}>

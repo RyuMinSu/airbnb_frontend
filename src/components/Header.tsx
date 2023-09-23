@@ -1,11 +1,12 @@
-import { Box, Button, HStack, Stack, IconButton, useColorMode, useColorModeValue, useDisclosure, Avatar, Menu, MenuButton, MenuList, MenuItem, Toast, useToast } from "@chakra-ui/react"
+import { Box, Button, HStack, Stack, IconButton, useColorMode, useColorModeValue, useDisclosure, Avatar, Menu, MenuButton, MenuList, MenuItem, Toast, useToast, ToastId } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
 import useUser from "../lib/useUser";
-import { logout } from "../api";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { logOut } from "../api";
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRef } from "react";
 
 
 
@@ -19,25 +20,29 @@ export default function Header() {
 	const logoColor = useColorModeValue("red.500", "red.200")
 	const toast = useToast();
 	const queryClient = useQueryClient();
+	const toastId = useRef<ToastId>();
+	const mutation = useMutation(logOut, {
+		onMutate: () => {
+      toastId.current = toast({
+        title: "Login out...",
+        description: "Sad to see you go...",
+        status: "loading",
+        position: "bottom-right",
+      });
+    },
+		onSuccess: () => {
+      if (toastId.current) {
+        queryClient.refetchQueries(["me"]);
+        toast.update(toastId.current, {
+          status: "success",
+          title: "Done!",
+          description: "See you later!",
+        });
+      }
+    },
+  });
 	const onLogOut = async() => {
-		const toastId = toast({
-			title: "bye",
-			description: "see you",
-			status: "loading",
-			position: "bottom-right",
-		})
-
-		await logout();
-
-		// logout후 refetch
-		queryClient.refetchQueries(['me']);
-
-		setTimeout(() => {
-			toast.update(toastId, {
-				title: "bye2",
-				description: "see you2",
-				status: "success"
-			})}, 3000)
+		mutation.mutate()
 	}
 
 	return (	
