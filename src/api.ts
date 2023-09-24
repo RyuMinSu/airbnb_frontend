@@ -72,7 +72,13 @@ Instance.post(
 		}
 	).then((response) => response.data);
 	
+export const getAmenities = () =>
+	Instance.get("rooms/amenities").then((response) => response.data)
 
+export const getCategories = () =>
+	Instance.get("categories").then((response) => response.data)
+
+	
 // export default async function getRooms() {
 // 	const response = await Instance.get('rooms/');
 // 	return response.data	
