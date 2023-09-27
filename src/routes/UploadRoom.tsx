@@ -4,8 +4,9 @@ import ProtectedPage from "../components/ProtectedPage"
 import { FaBed, FaDollarSign, FaMoneyBill, FaToilet } from "react-icons/fa";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { IUploadRoomVariables, getAmenities, getCategories, uploadRoom } from "../api";
-import { IAmenity, ICategory } from "../type";
+import { IAmenity, ICategory, IRoomDetail } from "../type";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -16,13 +17,15 @@ export default function UploadRoom() {
 	const {data: amenities, isLoading: isAmenitiesLoading} = useQuery<IAmenity[]>(["amenities"], getAmenities);
 	const {data: categories, isLoading: isCategoriesLoading} = useQuery<ICategory[]>(["categories"], getCategories);
 	const toast = useToast();
+	const navigate = useNavigate();
 	const mutation = useMutation(uploadRoom, {
-		onSuccess: () => {
+		onSuccess: (data: IRoomDetail) => {
 			toast({
 				status: "success",
 				title: "Room Created",
 				position: "bottom-right"
-			})
+			});
+			navigate(`/rooms/${data.id}`);
 		}
 	});
 	const onSubmit = (data:IUploadRoomVariables) => {

@@ -16,6 +16,7 @@ export interface IRoomList {
   rating: number;
   is_owner: boolean;
   photos: IPhotoPhoto[];
+	name: string;
 }
 
 export interface IRoomOwner {	

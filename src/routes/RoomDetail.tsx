@@ -26,9 +26,11 @@ export default function RoomDetail() {
 			{/* photos */}
 			<Grid rounded={"xl"} overflow={"hidden"} mt={8} gap={3} templateColumns={"repeat(4, 1fr)"} h={"60vh"} templateRows={"1fr 1fr"}>
 				{[0,1,2,3,4].map((index) => (
-					<GridItem colSpan={index===0 ? 2: 1} rowSpan={index===0 ? 2: 1} key={index} overflow={"hidden"}>
+					<GridItem colSpan={index===0 ? 2: 1} rowSpan={index===0 ? 2: 1} key={index} overflow={"hidden"}>						
 						<Skeleton isLoaded={!isLoading} h={"100%"} w={"100%"}>
-							<Img h={"100%"} w={"100%"}  objectFit={"cover"} src={data?.photos[index].file} />
+							{data?.photos && data.photos.length > 0 ? (
+								<Img h={"100%"} w={"100%"}  objectFit={"cover"} src={data?.photos[index].file} />
+							) : null}
 						</Skeleton>
 					</GridItem>
 				))}

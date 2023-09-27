@@ -11,9 +11,10 @@ interface IRoomProps {
 	price: number
 	rating: number
 	pk: number
+	name: string
 }
 
-export default function Room({ imageUrl, city, country, price, rating, pk }: IRoomProps) {
+export default function Room({ imageUrl, city, country, price, rating, pk, name }: IRoomProps) {
 	return (
 		<Link to={`/rooms/${pk}`}>
 			<VStack alignItems={"start"}>
@@ -31,7 +32,7 @@ export default function Room({ imageUrl, city, country, price, rating, pk }: IRo
 				<Box>
 					<Grid gap={2} templateColumns={"6fr 1fr"}>
 						<Text display={"block"} as={"b"} noOfLines={1} fontSize={"md"}>
-							Ongryong-myeon, Gwangyang-si, 전라남도, 한국
+							{name}
 						</Text>
 						<HStack>
 							<FaStar />

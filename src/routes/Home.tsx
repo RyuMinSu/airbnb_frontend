@@ -50,11 +50,12 @@ export default function Home() {
         <Room
 					key={room.id}
 					pk={room.id}
-          imageUrl={room.photos[0].file}          
+          imageUrl={room.photos[0]?.file}          
           rating={room.rating}
           city={room.city}
           country={room.country}
           price={room.price}
+					name={room.name}
         />
       ))}
 			
